@@ -1,13 +1,22 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:registration/profile.dart';
+import 'package:registration/services/firebase_auth_service.dart';
 
 import 'package:registration/signup.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
+ State<Login> createState() => _LoginState();
+}
+class _LoginState extends State<Login> {
+   bool isLoading=false;
+    @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController();
+     TextEditingController passwordControler = TextEditingController();
     return Scaffold(
       body: Center(
         child: Padding(
@@ -33,6 +42,7 @@ class Login extends StatelessWidget {
                 height: 30,
               ),
               TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -55,6 +65,7 @@ class Login extends StatelessWidget {
               ),
               SizedBox(height: 10),
               TextField(
+                controller: passwordControler,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -79,12 +90,24 @@ class Login extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.cyanAccent, fixedSize: Size(400, 40)),
-                onPressed: () {},
+                onPressed: () async {setState(() {
+                    isLoading=true;
+                  });
+                  
+                  await login(username: usernameController.text, password: passwordControler.text, context: context);
+                  setState(() {
+                        
+                      isLoading=false;
+                      });}
+                  
+                  ,
                 child: Text(
-                  "Submit",
+                  "Login",
                   style: TextStyle(color: Colors.purple),
                 ),
+                
               ),
+              
               SizedBox(height: 50),
               // Forgot Password link
               TextButton(

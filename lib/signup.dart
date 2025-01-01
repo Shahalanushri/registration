@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:registration/login.dart';
+import 'package:registration/services/firebase_auth_service.dart';
 
-class Signup extends StatelessWidget {
+class Signup extends StatefulWidget {
   const Signup({super.key});
 
   @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+
+   bool isLoading=false;
+  @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordControler = TextEditingController();
+  TextEditingController confirmpasswordController = TextEditingController();
+ 
     return Scaffold(
       body: Center(
         child: Padding(
@@ -34,6 +47,7 @@ class Signup extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -57,6 +71,7 @@ class Signup extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               TextField(
+                controller: emailcontroller,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(255, 247, 221, 230),
@@ -80,6 +95,7 @@ class Signup extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               TextField(
+                controller: passwordControler,
                 obscureText: true,
                 decoration: InputDecoration(
                   filled: true,
@@ -104,6 +120,7 @@ class Signup extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               TextField(
+                controller: confirmpasswordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   filled: true,
@@ -115,20 +132,35 @@ class Signup extends StatelessWidget {
                   hintText: "Confirm Password",
                   contentPadding:
                       const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
+                 
                 ),
                 style: const TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                
+                    
+                  setState(() {
+                    isLoading=true;
+                  });
+                 await Future.delayed(
+                    Duration(seconds: 2)
+                  );
+                  await signup(
+                      username: usernameController.text,
+                      email: emailcontroller.text,
+                      password: passwordControler.text,
+                      context: context,
+                      confirmpassword: confirmpasswordController.text);
+                      setState(() {
+                        
+                      isLoading=false;
+                      });
                   // Handle sign-up logic
                 },
                 style: ElevatedButton.styleFrom(
@@ -138,7 +170,8 @@ class Signup extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                child: const Text(
+                // ignore: dead_code
+                child:isLoading?CircularProgressIndicator(color: Colors.white,): Text(
                   "Sign Up",
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
@@ -176,14 +209,15 @@ class Signup extends StatelessWidget {
                   "Sign Up with Google",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Color.fromARGB(255, 226, 17, 216),
+                    color: Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => Login()));
                 },
                 child: const Text(
                   "Already have an account? Login",
