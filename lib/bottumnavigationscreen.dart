@@ -22,7 +22,7 @@ class _BottumnavigationscreenState extends State<Bottumnavigationscreen> {
       },
       items:[
       BottomNavigationBarItem(icon: Icon(Icons.note),label:"note"),
-      BottomNavigationBarItem(icon: Icon(Icons.note),label:"note")
+      BottomNavigationBarItem(icon: Icon(Icons.person),label:"profile")
 
     ]));
   }

@@ -37,6 +37,7 @@ class _LoginState extends State<Login> {
                   color: Colors.blue,
                   fontSize: 15,
                 ),
+                
               ),
               SizedBox(
                 height: 30,
